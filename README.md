@@ -1,6 +1,6 @@
 # Neovim Configuration
 
-This is the Neovim vim Configuration that you can use.
+Neovim Configuration with debugger and lsp support.
 
 
 ## Prerequisites
