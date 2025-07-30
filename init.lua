@@ -19,7 +19,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -- Step 2: Configure Lazy.nvim to manage plugins
-require("lazy").setup({
+ require("lazy").setup({
 	ui = {
 		border = "double",
 	},
@@ -33,5 +33,5 @@ require("lazy").setup({
 vim.cmd("colorscheme rose-pine-moon")
 vim.o.cmdheight = 0
 vim.o.wrap = false
--- Use escape sequences to set cursor shape
+vim.opt.guicursor = "" -- this is betterrrrrrr;
 

@@ -18,4 +18,12 @@ return {
 			}
 		)
 	end,
+  {
+    "windwp/nvim-ts-autotag", -- For auto-closing HTML/JSX tags
+    config = function()
+      require("nvim-ts-autotag").setup()
+    end,
+  },
 }
+
+

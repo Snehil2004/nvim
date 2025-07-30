@@ -32,6 +32,7 @@ vim.keymap.set("n", "Z", vim.diagnostic.open_float, { silent = true })
 vim.keymap.set("n", "<Leader>dc", ":DBUIToggle<CR>", { silent = true })
 vim.keymap.set("n", "<Leader>gs", ":DiffviewOpen<CR>", {noremap = true ,silent = true })
 vim.keymap.set("n", "<Leader>q", ":DiffviewClose<CR>", {noremap = true ,silent = true })
+vim.keymap.set("n", "<leader>vrr",  vim.lsp.buf.references,{silent = true} )
 
 -- vim.keymap.set('n', '<S-l>', ':BufferLineCycleNext<CR>', { noremap = true, silent = true })
 -- vim.keymap.set('n', '<S-h>', ':BufferLineCyclePrev<CR>', { noremap = true, silent = true })
