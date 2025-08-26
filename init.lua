@@ -34,4 +34,4 @@ vim.cmd("colorscheme rose-pine-moon")
 vim.o.cmdheight = 0
 vim.o.wrap = false
 vim.opt.guicursor = "" -- this is betterrrrrrr;
-
+--kai matlab hai o
