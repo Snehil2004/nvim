@@ -1,176 +1,82 @@
 return {
 	{
-		"hrsh7th/cmp-nvim-lsp",
-		dependencies = {
-			"hrsh7th/cmp-cmdline",
-			"hrsh7th/cmp-path",
-		},
-	},
-
-	{
-		"hrsh7th/nvim-cmp",
+		"saghen/blink.cmp",
+		version = "1.*",
 		dependencies = {
 			"L3MON4D3/LuaSnip",
-			"saadparwaiz1/cmp_luasnip",
-			"rafamadriz/friendly-snippets",
-			"kristijanhusak/vim-dadbod-completion",  
+			version = "v2.*",
+			dependencies = {
+				"rafamadriz/friendly-snippets",
+			},
+			config = function()
+				-- Load VS Code style snippets (friendly-snippets)
+				require("luasnip.loaders.from_vscode").lazy_load()
+				-- Load custom Lua snippets (e.g., C++ competitive programming boilerplate)
+				require("luasnip.loaders.from_lua").lazy_load({ paths = "~/.config/nvim/lua/snippets" })
+			end,
 		},
 
-		config = function()
-			local cmp = require("cmp")
-			local lspkind = require("lspkind")
-			local luasnip = require("luasnip")
+		---@module 'blink.cmp'
+		---@type blink.cmp.Config
+		opts = {
+			snippets = { preset = "luasnip" },
 
-			-- 🔹 Cmdline Completion
-			cmp.setup.cmdline("/", {
-				mapping = cmp.mapping.preset.cmdline(),
-				sources = {
-					{ name = "buffer" },
-				},
-			})
+			keymap = {
+				preset = "none",
+				["<C-b>"] = { "scroll_documentation_up", "fallback" },
+				["<C-f>"] = { "scroll_documentation_down", "fallback" },
+				["<C-Space>"] = { "show", "fallback" },
+				["<C-e>"] = { "cancel", "fallback" },
+				["<CR>"] = { "accept", "fallback" },
+				["<Tab>"] = { "select_next", "fallback" },
+				["<S-Tab>"] = { "select_prev", "fallback" },
+			},
 
-			-- 🔹 Load Snippets
-			require("luasnip.loaders.from_vscode").lazy_load()
-			require("luasnip.loaders.from_lua").lazy_load({ paths = "~/.config/nvim/lua/snippets" }) -- 🔧 Load custom Lua snippets (added for cpp boilerplate)
+			completion = {
+				documentation = {
+					auto_show = true,
+					auto_show_delay_ms = 200,
+					window = { border = "rounded" },
+				},
+				menu = {
+					border = "rounded",
+					draw = {
+						columns = {
+							{ "kind_icon" },
+							{ "label", "label_description", gap = 1 },
+							{ "kind" },
+						},
+					},
+				},
+				list = {
+					selection = { preselect = true, auto_insert = false },
+				},
+			},
 
-			-- 🌍 *Global Completion Setup (For All Files)*
-			cmp.setup({
-				snippet = {
-					expand = function(args)
-						require("luasnip").lsp_expand(args.body)
-					end,
-				},
-				window = {
-					completion = cmp.config.window.bordered(),
-					documentation = cmp.config.window.bordered(),
-				},
-				mapping = cmp.mapping.preset.insert({
-					["<C-b>"] = cmp.mapping.scroll_docs(-4),
-					["<C-f>"] = cmp.mapping.scroll_docs(4),
-					["<C-Space>"] = cmp.mapping.complete(),
-					["<C-e>"] = cmp.mapping.abort(),
-					["<CR>"] = cmp.mapping.confirm({ select = true }),
-					["<Tab>"] = cmp.mapping.select_next_item(),
-					["<S-Tab>"] = cmp.mapping.select_prev_item(),
-				}),
-				sources = cmp.config.sources({
-					{ name = "nvim_lsp" },
-					{ name = "luasnip" },
-					{ name = "buffer" },
-				}),
-				formatting = {
-					format = lspkind.cmp_format({
-						mode = "symbol",
-						maxwidth = 50,
-						ellipsis_char = "...",
-						show_labelDetails = true,
-					}),
-				},
-			})
+			signature = {
+				enabled = true,
+				window = { border = "rounded" },
+			},
 
-			-- 🔥 *Enable Dadbod Completion ONLY for SQL Files*
-			vim.api.nvim_create_autocmd("FileType", {
-				pattern = { "sql", "mysql", "plsql" },
-				callback = function()
-					require("cmp").setup.buffer({
-						sources = cmp.config.sources({
-							{ name = "vim-dadbod-completion" }, -- Database Autocompletion
-							{ name = "buffer" },
-							{ name = "path" },
-						}),
-					})
-				end,
-			})
-		end,
+			sources = {
+				default = { "lsp", "path", "snippets", "buffer" },
+				per_filetype = {
+					sql = { "dadbod", "buffer", "path" },
+					mysql = { "dadbod", "buffer", "path" },
+					plsql = { "dadbod", "buffer", "path" },
+				},
+				providers = {
+					dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
+				},
+			},
+
+			cmdline = {
+				enabled = true,
+			},
+
+			appearance = {
+				nerd_font_variant = "mono",
+			},
+		},
 	},
 }
---[[ 
-return {
-  {
-    "hrsh7th/cmp-nvim-lsp",
-    dependencies = {
-      "hrsh7th/cmp-cmdline",
-      "hrsh7th/cmp-path",
---      "hrsh7th/cmp-buffer", -- Explicitly declare
-    },
-  },
-
-  {
-    "hrsh7th/nvim-cmp",
-    dependencies = {
-      "L3MON4D3/LuaSnip",
-      "saadparwaiz1/cmp_luasnip",
-      "rafamadriz/friendly-snippets",
-      "kristijanhusak/vim-dadbod-completion",
-    },
-    config = function()
-      local cmp = require("cmp")
-      local lspkind = require("lspkind")
-      local luasnip = require("luasnip")
-
-      -- 🔹 Load Snippets
-      require("luasnip.loaders.from_vscode").lazy_load()
-      require("luasnip.loaders.from_lua").lazy_load({
-        paths = { "~/.config/nvim/lua/snippets" }, -- custom lua snippets (e.g., C++ boilerplate)
-      })
-
-      -- 🔹 Cmdline Completion
-      cmp.setup.cmdline("/", {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = {
-          { name = "buffer" },
-        },
-      })
-
-      -- 🌍 Global Completion Setup
-      cmp.setup({
-        snippet = {
-          expand = function(args)
-            luasnip.lsp_expand(args.body)
-          end,
-        },
-        window = {
-          completion = cmp.config.window.bordered(),
-          documentation = cmp.config.window.bordered(),
-        },
-        mapping = cmp.mapping.preset.insert({
-          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-          ["<C-f>"] = cmp.mapping.scroll_docs(4),
-          ["<C-Space>"] = cmp.mapping.complete(),
-          ["<C-e>"] = cmp.mapping.abort(),
-          ["<CR>"] = cmp.mapping.confirm({ select = true }),
-          ["<Tab>"] = cmp.mapping.select_next_item(),
-          ["<S-Tab>"] = cmp.mapping.select_prev_item(),
-        }),
-        sources = cmp.config.sources({
-          { name = "nvim_lsp" },
-          { name = "luasnip" },
-          { name = "buffer" },
-        }),
-        formatting = {
-          format = lspkind.cmp_format({
-            mode = "symbol",
-            maxwidth = 50,
-            ellipsis_char = "...",
-            show_labelDetails = true,
-          }),
-        },
-      })
-
-      -- 🔥 Enable Dadbod Completion Only for SQL
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = { "sql", "mysql", "plsql" },
-        callback = function()
-          cmp.setup.buffer({
-            sources = cmp.config.sources({
-              { name = "vim-dadbod-completion" },
-              { name = "buffer" },
-              { name = "path" },
-            }),
-          })
-        end,
-      })
-    end,
-  },
-}
- ]]
