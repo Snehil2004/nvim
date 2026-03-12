@@ -4,7 +4,6 @@ return {
 		event = "VeryLazy",
 		dependencies = {
 			"MunifTanjim/nui.nvim",
-			"rcarriga/nvim-notify",
 		},
 		opts = {
 			cmdline = {
@@ -21,9 +20,9 @@ return {
 			},
 			messages = {
 				enabled = true,
-				view = "notify",
-				view_error = "notify",
-				view_warn = "notify",
+				view = "mini",
+				view_error = "mini",
+				view_warn = "mini",
 			},
 			popupmenu = {
 				enabled = true,
@@ -44,16 +43,6 @@ return {
 				inc_rename = false,
 				lsp_doc_border = true,
 			},
-		},
-	},
-	{
-		"rcarriga/nvim-notify",
-		opts = {
-			background_colour = "#000000",
-			render = "wrapped-compact",
-			stages = "fade",
-			timeout = 2000,
-			max_width = 60,
 		},
 	},
 }

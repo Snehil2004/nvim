@@ -15,7 +15,7 @@ return {
 			"neovim/nvim-lspconfig",
 		},
 		opts = {
-			ensure_installed = { "lua_ls" },
+			ensure_installed = { "lua_ls", "ts_ls" },
 			-- Automatically calls vim.lsp.enable() for installed servers
 			automatic_enable = true,
 		},
