@@ -7,14 +7,16 @@ return {
 			lua = { "stylua" },
 			javascript = { "prettier" },
 			typescript = { "prettier" },
+			javascriptreact = { "prettier" },
+			typescriptreact = { "prettier" },
 			html = { "prettier" },
 			css = { "prettier" },
 			json = { "prettier" },
 			markdown = { "prettier" },
 			c = { "clang-format" },
 			cpp = { "clang-format" },
-			objc = { "clang-format" },
-			objcpp = { "clang-format" },
+			python = { "black" },
+			sql = { "sql_formatter" },
 		},
 		formatters = {
 			["clang-format"] = {

@@ -23,6 +23,17 @@ vim.keymap.set("n", "<Leader>dc", ":DBUIToggle<CR>", { silent = true })
 -- Diagnostics
 vim.keymap.set("n", "Z", vim.diagnostic.open_float, { silent = true, desc = "Open diagnostic float" })
 
+-- Ghost text toggle
+vim.g.blink_ghost_text = false
+vim.keymap.set("n", "<leader>gt", function()
+	vim.g.blink_ghost_text = not vim.g.blink_ghost_text
+	if vim.g.blink_ghost_text then
+		vim.notify("Ghost: ON", vim.log.levels.INFO)
+	else
+		vim.notify("Ghost: OFF", vim.log.levels.INFO)
+	end
+end, { silent = true, desc = "Toggle ghost text" })
+
 -- LSP keymaps (set only when an LSP client attaches to a buffer)
 vim.api.nvim_create_autocmd("LspAttach", {
 	desc = "LSP keybindings",
