@@ -57,3 +57,14 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, vim.tbl_extend("force", opts, { desc = "Rename symbol" }))
 	end,
 })
+
+vim.keymap.set("n", "<leader>cp", function()
+	local file_path = vim.fn.expand("%:p")
+	if file_path == "" then
+		vim.notify("No file path to copy", vim.log.levels.WARN)
+		return
+	end
+
+	vim.fn.setreg("+", file_path)
+	vim.notify("Copied: " .. file_path, vim.log.levels.INFO)
+end, { silent = true, desc = "Copy absolute file path" })

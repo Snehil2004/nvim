@@ -10,6 +10,9 @@ return {
 		telescope.setup({
 			defaults = {
 				sorting_strategy = "ascending",
+				preview = {
+					treesitter = false,
+				},
 				layout_config = {
 					horizontal = {
 						prompt_position = "top",

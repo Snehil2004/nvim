@@ -6,11 +6,21 @@ vim.opt.relativenumber = true
 vim.opt.expandtab = false
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
+vim.opt.autoindent = true
+vim.opt.smartindent = true
 
 -- General
 vim.opt.swapfile = true
 vim.o.mouse = ""
 vim.opt.termguicolors = true
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "c", "cpp" },
+	callback = function()
+		vim.bo.cindent = true
+		vim.bo.indentexpr = ""
+	end,
+})
 
 -- Source current file
 vim.keymap.set("n", "<leader><leader>x", ":source %<CR>", { desc = "Source current file" })
